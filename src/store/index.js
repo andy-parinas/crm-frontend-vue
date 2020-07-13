@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import AuthModule from "../modules/authentication/vuex/auth-module";
 import SalesContactVuexModule from "../modules/sales-contact/data/sales-contact-vuex-module";
+import LeadVuexModule from "../modules/leads/data/lead-vuex-module";
 
 Vue.use(Vuex)
 
@@ -72,6 +73,7 @@ export default new Vuex.Store({
   },
   modules: {
     auth: AuthModule,
-    salesContacts: SalesContactVuexModule
+    salesContacts: SalesContactVuexModule,
+    leads: LeadVuexModule
   }
 })

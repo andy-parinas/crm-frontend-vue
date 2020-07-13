@@ -35,6 +35,12 @@ Vue.use(VueRouter)
         meta: {requiresAuth: true}
 
       },
+      {
+        path: 'lead',
+        name: 'lead',
+        component: () => import(/* webpackChunkName: "leadMain" */ "@/modules/leads/pages/LeadPage.vue"),
+        meta: {requiresAuth: true},
+      }
     ]
   },
 ];
