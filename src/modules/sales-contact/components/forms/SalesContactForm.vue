@@ -199,6 +199,24 @@
                     this.$set(this.form, 'postcode', '')
                 }
             }
+        },
+        watch: {
+            initialData: {
+                handler(){
+                    if (this.initialData){
+                        this.form = Object.assign({}, this.initialData)
+                    }else {
+                        this.form = Object.assign({}, this.defaultForm)
+                        this.reset();
+                    }
+                },
+                deep: true
+            }
+        },
+        mounted() {
+            if (this.initialData){
+                this.form = Object.assign({}, this.initialData)
+            }
         }
     }
 </script>

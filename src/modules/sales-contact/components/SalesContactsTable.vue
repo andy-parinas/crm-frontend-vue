@@ -46,6 +46,10 @@
 
             </v-data-table>
         </v-card>
+        <v-dialog v-model="editDialog"  persistent width="850px">
+            <SalesContactEditDialog :sales-contact="selectedItem"
+                                    @close="handleCloseEditDialog"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -54,10 +58,11 @@
     import SearchBySelectionForm from "../../common/components/SearchBySelectionForm";
     import ErrorHandlerMixins from "../../common/mixins/error-handler-mixins";
     import SalesContactDetails from "./SalesContactDetails";
+    import SalesContactEditDialog from "./dialogs/SalesContactEditDialog";
 
     export default {
         name: "SalesContactsTable",
-        components: {SalesContactDetails, SearchBySelectionForm},
+        components: {SalesContactEditDialog, SalesContactDetails, SearchBySelectionForm},
         data(){
             return {
                 falseData: [],
@@ -110,7 +115,6 @@
                     disablePagination: false,
                     disableItemsPerPage : false
                 },
-                editedItemIndex: -1,
                 selectedItem: null,
             }
         },
@@ -161,8 +165,14 @@
 
             },
 
-            handleEdit(){
+            handleEdit(item){
+                this.selectedItem = Object.assign({}, item);
+                this.editDialog = true;
+            },
 
+            handleCloseEditDialog(){
+                this.selectedItem = null;
+                this.editDialog = false;
             },
 
             handleConvertToLead(){
