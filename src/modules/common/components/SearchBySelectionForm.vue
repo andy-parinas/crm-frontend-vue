@@ -11,8 +11,8 @@
         </v-col>
         <v-col cols="12" md="2" sm="12">
             <v-btn color="secondary" fab small elevation="3" class="mr-2 white--text"
-                   :disabled="canSearch"
-                   @click="searchContacts">
+                   :disabled="cantSearch"
+                   @click="$emit('search', {searchFor,searchIn})">
                 <v-icon>mdi-magnify</v-icon>
             </v-btn>
             <v-btn color="success" fab small elevation="3" class="mr-2 white--text"
@@ -36,14 +36,11 @@
             }
         },
         computed:{
-            canSearch(){
+            cantSearch(){
                 return this.searchIn.trim() === '' || this.searchFor.trim() === '';
             }
         },
         methods: {
-            searchContacts(){
-                this.$emit('search', {searchFor: this.searchFor, searchIn: this.searchIn})
-            },
             resetSearch(){
                 this.searchFor = '';
                 this.searchIn = '';

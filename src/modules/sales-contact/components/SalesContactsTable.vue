@@ -2,7 +2,9 @@
     <div>
         <v-card>
             <v-card-title id="table-header" >
-                <SearchBySelectionForm :selections="selections" />
+                <SearchBySelectionForm :selections="selections"
+                                       @search="handleSalesContactSearch"
+                                        @reset="handleSearchReset"/>
             </v-card-title>
             <v-data-table
                     :items="salesContacts"
@@ -77,8 +79,8 @@
                 searchFor: '',
                 searchIn: '',
                 selections: [
-                    { text: 'First Name',value: 'firstName'},
-                    { text: 'Last Name', value: 'lastName' },
+                    { text: 'First Name',value: 'first_name'},
+                    { text: 'Last Name', value: 'last_name' },
                     { text: 'Suburb', value: 'suburb' },
                     { text: 'State', value: 'state' },
                     { text: 'Postcode', value: 'postcode' },
@@ -130,16 +132,29 @@
                     if(this.loading) return;
 
                     this.loading = true;
+                    this.$set(this.footerProps, 'disablePagination', true)
+                    this.$set(this.footerProps, 'disableItemsPerPage', true)
+
                     await this.fetchSalesContacts({pageOptions, searchOptions})
 
                 }catch (e) {
                     this.handleError(e)
                 }finally {
                     this.loading = false;
+                    this.$set(this.footerProps, 'disablePagination', false)
+                    this.$set(this.footerProps, 'disableItemsPerPage', false)
                 }
             },
             handlePageOptionsChange(){
-
+                if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
+                {
+                    this.handleGetSalesContacts(this.pageOptions, {
+                        searchFor: this.searchFor,
+                        searchIn: this.searchIn
+                    });
+                }else {
+                    this.handleGetSalesContacts(this.pageOptions);
+                }
             },
 
             handleDelete(){
@@ -150,7 +165,31 @@
 
             },
 
-            handleConvertToLead(){}
+            handleConvertToLead(){
+
+
+            },
+            handleSalesContactSearch({searchIn, searchFor}){
+                this.searchFor = searchFor;
+                this.searchIn = searchIn;
+
+                this.pageOptions = Object.assign({}, this.defaultOptions);
+
+                if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
+                {
+                    this.handleGetSalesContacts(this.pageOptions, {
+                        searchFor: this.searchFor,
+                        searchIn: this.searchIn
+                    });
+                }
+            },
+
+            handleSearchReset(){
+                this.searchFor = '';
+                this.searchIn = '';
+                this.pageOptions = Object.assign({}, this.defaultOptions);
+                this.handleGetSalesContacts(this.pageOptions,);
+            }
 
         },
         mounted() {
