@@ -36,7 +36,7 @@
                                    x-small fab text dark color="error" class="mr-3" @click="handleDelete(item)">
                                 <v-icon small > mdi-trash-can-outline </v-icon>
                             </v-btn>
-                            <v-btn x-small fab text dark color="accent" @click="handleShow(item)" :loading="item.leadId === selectedId" >
+                            <v-btn x-small fab text dark color="accent" @click="handleShow(item)" :loading="item.leadId === selectedLeadId" >
                                 <v-icon small > mdi-forward </v-icon>
                             </v-btn>
                         </v-row>
@@ -53,7 +53,8 @@
     import SearchBySelectionForm from "../../common/components/SearchBySelectionForm";
     import {mapState, mapActions} from 'vuex';
     import ErrorHandlerMixins from "../../common/mixins/error-handler-mixins";
-    import LeadOutcomeChip from "./LeadOutcomeChip";
+    import LeadOutcomeChip from "./ui/LeadOutcomeChip";
+    import LeadApi from "../data/lead-api";
 
     export default {
         name: "LeadsTable",
@@ -61,7 +62,7 @@
         data(){
             return {
                 loading: false,
-                selectedId: '',
+                selectedLeadId: '',
                 selections: [
                     {text: 'Lead Number', value: 'lead_number'},
                     {text: 'First Name', value: 'first_name'},
@@ -130,8 +131,7 @@
                     this.loading = true
                     await this.fetchLeads({pageOptions, searchOptions})
                 }catch (e) {
-                    //this.handleError(e)
-                    console.log('Error', e.response)
+                    this.handleError(e)
                 }finally {
                     this.loading = false
                 }
@@ -149,8 +149,19 @@
 
             },
 
-            handleShow(){
+            async handleShow(item){
 
+                try {
+                    this.selectedLeadId = item.leadId
+                    const response = await LeadApi.getSingleLead(item.leadId);
+                    this.$emit('showLead', response.data)
+                }catch (e) {
+                    this.handleError(e)
+                }
+                finally
+                {
+                    this.selectedLeadId = ''
+                }
             }
 
         },

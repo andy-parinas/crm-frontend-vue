@@ -20,7 +20,7 @@ const LeadApi = {
 
         const response = await api().get(requestUri);
 
-        return response.data.data;
+        return response.data;
     },
 
     async createLead(formData){
