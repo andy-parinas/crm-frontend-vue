@@ -50,6 +50,11 @@
             <SalesContactEditDialog :sales-contact="selectedItem"
                                     @close="handleCloseEditDialog"/>
         </v-dialog>
+
+        <v-dialog v-model="deleteDialog" persistent max-width="550" class="px-2">
+            <SalesContactDeleteDialog :sales-contact="selectedItem"
+                                      @close="handleCloseDeleteDialog"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -59,10 +64,11 @@
     import ErrorHandlerMixins from "../../common/mixins/error-handler-mixins";
     import SalesContactDetails from "./SalesContactDetails";
     import SalesContactEditDialog from "./dialogs/SalesContactEditDialog";
+    import SalesContactDeleteDialog from "./dialogs/SalesContactDeleteDialog";
 
     export default {
         name: "SalesContactsTable",
-        components: {SalesContactEditDialog, SalesContactDetails, SearchBySelectionForm},
+        components: {SalesContactDeleteDialog, SalesContactEditDialog, SalesContactDetails, SearchBySelectionForm},
         data(){
             return {
                 falseData: [],
@@ -161,10 +167,15 @@
                 }
             },
 
-            handleDelete(){
-
+            handleDelete(item){
+                this.selectedItem = Object.assign({}, item);
+                this.deleteDialog = true;
             },
 
+            handleCloseDeleteDialog(){
+                this.selectedItem = null;
+                this.deleteDialog = false;
+            },
             handleEdit(item){
                 this.selectedItem = Object.assign({}, item);
                 this.editDialog = true;

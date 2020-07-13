@@ -37,7 +37,12 @@ const ErrorHandler = {
                 break;
 
             case 409:
-                callback("Problem processing your data. Please check and try again")
+                if(errorResponse && errorResponse.data && typeof errorResponse.data === "string" ){
+                    callback(errorResponse.data)
+                }else {
+                    callback("Something went wrong. Please check your data and try again")
+                }
+
                 break;
             default:
                 callback("Something went wrong. Please try again")
