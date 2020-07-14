@@ -29,7 +29,7 @@
                             <LeadAppointmentDetails :appointment="lead.appointment" />
                         </v-tab-item>
                         <v-tab-item>
-                            Document
+                            <LeadDocumentDetails :lead-id="lead.details.id" />
                         </v-tab-item>
                         <v-tab-item>
                             Contract
@@ -48,9 +48,10 @@
     import LeadInformationDetails from "./lead-details/LeadInformationDetails";
     import LeadJobTypeDetails from "./lead-details/LeadJobTypeDetails";
     import LeadAppointmentDetails from "./lead-details/LeadAppointmentDetails";
+    import LeadDocumentDetails from "./lead-details/LeadDocumentDetails";
     export default {
         name: "LeadDetails",
-        components: {LeadAppointmentDetails, LeadJobTypeDetails, LeadInformationDetails},
+        components: {LeadDocumentDetails, LeadAppointmentDetails, LeadJobTypeDetails, LeadInformationDetails},
         props: ['lead']
     }
 </script>
